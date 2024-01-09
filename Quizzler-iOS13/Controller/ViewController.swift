@@ -11,29 +11,28 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var questionLabel: UILabel!
-    @IBOutlet weak var trueButton: UIButton!
-    @IBOutlet weak var falseButton: UIButton!
+    @IBOutlet weak var firstOptionButton: UIButton!
+    @IBOutlet weak var thirdOptionButton: UIButton!
     @IBOutlet weak var progressBar: UIProgressView!
+    @IBOutlet weak var secondOptionButton: UIButton!
     
     var quizBrain = QuizBrain()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI()
-        
-        
-        // Do any additional setup after loading the view.
     }
-
-
+    
+    
     @IBAction func answerPressed(_ sender: UIButton) {
         guard let userAnswer = sender.currentTitle else {return}
-       let userGotItRight = quizBrain.checkAnswer(userAnswer: userAnswer)
+        
+        let userGotItRight = quizBrain.checkAnswer(userAnswer: userAnswer)
         
         if userGotItRight {
-           trueButton.backgroundColor = .green
-       }else {
-            falseButton.backgroundColor = .red
+            sender.backgroundColor = .green
+        }else {
+            sender.backgroundColor = .red
         }
         quizBrain.nextQuestion()
         
@@ -42,10 +41,16 @@ class ViewController: UIViewController {
     }
     @objc func updateUI() {
         questionLabel.text = quizBrain.getQuestionText()
-        trueButton.backgroundColor = .clear
-        falseButton.backgroundColor = .clear
+        firstOptionButton.setTitle(quizBrain.getButtonTitle(at: 0), for: .normal)
+        secondOptionButton.setTitle(quizBrain.getButtonTitle(at: 1), for: .normal)
+        thirdOptionButton.setTitle(quizBrain.getButtonTitle(at: 2), for: .normal)
+
         progressBar.progress = quizBrain.getProgress()
         scoreLabel.text = "Score: \(quizBrain.getScore())"
+        
+        firstOptionButton.backgroundColor = .clear
+        secondOptionButton.backgroundColor = .clear
+        thirdOptionButton.backgroundColor = .clear
     }
     
 }
